@@ -1,0 +1,63 @@
+# =====================================================
+# Schema Mapper — maps raw column names -> standard names
+# =====================================================
+
+standard_columns:
+  # Temporal
+  timestamp: ["timestamp", "datetime", "date_time", "date", "time", "created_at", "session_start", "start_time", "Date"]
+  year: ["year", "Year"]
+  month: ["month", "Month"]
+  day: ["day", "Day"]
+  hour: ["hour", "Hour"]
+
+  # Demand (target)
+  energy_consumed_kwh: ["energy_consumed_kwh", "energy_kwh", "kwh_consumed", "kWh", "energy", "total_kwh",
+                         "energy_delivered", "kwh_delivered", "Energy (kWh)", "energy_consumed",
+                         "charging_energy_kwh", "Charging_Energy_kWh", "demand_kwh", "demand"]
+
+  # Duration
+  session_duration_hours: ["session_duration_hours", "duration_hours", "duration_h", "charging_time",
+                            "session_duration", "duration_min", "charging_duration", "Duration_Hours"]
+
+  # Location
+  city: ["city", "City", "city_name", "location", "Location", "area", "locality"]
+  state: ["state", "State", "state_name", "province", "region"]
+  zone: ["zone", "Zone", "district", "District", "ward", "area_code"]
+  latitude: ["latitude", "lat", "Latitude", "Lat"]
+  longitude: ["longitude", "lon", "lng", "Longitude", "Long", "Lon"]
+
+  # Station
+  station_id: ["station_id", "StationID", "station_name", "charger_id", "Station_ID", "id", "ID",
+               "charging_station_id", "ChargingStationID"]
+  charger_type: ["charger_type", "ChargerType", "connector_type", "ConnectorType", "charger_level",
+                 "Level", "Type", "charger_category"]
+  charger_capacity_kw: ["charger_capacity_kw", "capacity_kw", "power_kw", "Capacity_kW", "rated_power",
+                        "max_power_kw", "power_output_kw"]
+  num_chargers: ["num_chargers", "n_chargers", "charger_count", "total_chargers", "Number_of_Chargers"]
+
+  # EV Adoption (Dataset C)
+  ev_sales: ["ev_sales", "EV_Sales", "sales", "Sales", "units_sold", "ev_units"]
+  vehicle_category: ["vehicle_category", "Vehicle_Category", "vehicle_type", "Type", "Category",
+                     "segment", "Segment"]
+  manufacturer: ["manufacturer", "Manufacturer", "brand", "Brand", "OEM"]
+  model_name: ["model_name", "Model", "model", "vehicle_model"]
+  state_ev: ["state", "State"]
+  year_ev: ["year", "Year", "fiscal_year", "FY"]
+
+  # Derived / Synthetic (always labeled)
+  is_synthetic: ["is_synthetic"]
+  demand_zone_kwh: ["demand_zone_kwh"]       # model-generated zone-level demand
+  station_density: ["station_density"]
+  distance_nearest_station_km: ["distance_nearest_station_km"]
+
+demand_dataset:
+  required: ["energy_consumed_kwh"]
+  datetime_options: ["timestamp", "year", "month", "day", "hour"]
+
+stations_dataset:
+  required: ["city", "latitude", "longitude"]
+  optional: ["charger_type", "charger_capacity_kw", "num_chargers", "station_id"]
+
+adoption_dataset:
+  required: ["state", "year", "ev_sales"]
+  optional: ["vehicle_category", "manufacturer", "model_name"]

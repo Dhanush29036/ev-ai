@@ -1,0 +1,145 @@
+# =====================================================
+# EV XAI Planner — Main Configuration
+# =====================================================
+
+project:
+  name: "EV XAI Planner"
+  version: "1.0.0"
+  seed: 42
+  log_level: "INFO"
+
+paths:
+  data_raw: "data/raw"
+  data_interim: "data/interim"
+  data_processed: "data/processed"
+  outputs: "outputs"
+  models: "outputs/models"
+  figures: "outputs/figures"
+  tables: "outputs/tables"
+  maps: "outputs/maps"
+  reports: "outputs/reports"
+  docs: "docs"
+
+datasets:
+  demand:
+    name: "ev_charging_demand"
+    kaggle_ref: "ziya07/electric-vehicle-charging-demand-dataset"
+    local_dir: "data/raw/ev_charging_demand"
+    enabled: true
+  stations:
+    name: "ev_stations_india"
+    kaggle_ref: "pranjal9091/ev-charging-stations-in-india-simplified-2025"
+    local_dir: "data/raw/ev_stations_india"
+    enabled: true
+  adoption:
+    name: "indian_ev_dataset"
+    kaggle_ref: "sanhitasaxena/indian-electric-vehicle-dataset"
+    local_dir: "data/raw/indian_ev_dataset"
+    enabled: true
+
+data:
+  target_column: "energy_consumed_kwh"      # overridden by schema mapper if different
+  datetime_column: "timestamp"
+  location_columns: ["city", "state", "zone", "station_id"]
+  test_size: 0.2                            # chronological split
+  val_size: 0.1
+  cv_folds: 5
+  outlier_method: "iqr"                     # iqr | zscore
+  outlier_threshold: 3.0
+  fill_strategy: "forward"                  # forward | median | mean | interpolate
+  min_demand_kwh: 0.0
+  max_demand_kwh: 10000.0
+
+features:
+  lag_hours: [1, 6, 24, 168]
+  rolling_windows: [6, 24, 168]
+  cyclic_encoding: true
+  include_holidays: true
+  holiday_country: "IN"
+  target_encode_threshold: 10              # min samples for target encoding
+
+models:
+  rf:
+    enabled: true
+    n_estimators: 200
+    max_depth: 15
+    min_samples_leaf: 2
+    n_jobs: -1
+  xgboost:
+    enabled: true
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    n_jobs: -1
+  lightgbm:
+    enabled: true                          # optional extra
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.05
+    n_jobs: -1
+  baseline_naive:
+    enabled: true
+  baseline_lr:
+    enabled: true
+
+optuna:
+  n_trials: 30
+  timeout: 600                             # seconds per model
+  direction: "minimize"
+  metric: "rmse"
+  sampler: "tpe"
+
+shap:
+  max_samples: 1000                        # for background/explainer
+  n_dependence_plots: 5                    # top-N features
+  cache_path: "outputs/shap_cache.pkl"
+
+gis:
+  zone_method: "city"                      # city | grid | h3
+  h3_resolution: 6
+  grid_size_km: 25
+  hotspot_alpha: 0.05
+  crs: "EPSG:4326"
+  india_bounds:
+    min_lat: 6.4
+    max_lat: 37.6
+    min_lon: 68.1
+    max_lon: 97.4
+
+recommendation:
+  top_n: 10
+  weights:
+    demand: 0.30
+    hotspot: 0.25
+    supply_gap: 0.20
+    distance: 0.15
+    ev_adoption: 0.10
+  chargers_per_100_kwh_demand: 1.0
+  min_chargers: 2
+  max_chargers: 50
+
+forecast:
+  horizons_hours: [24, 168, 720]           # 24h, 7d, 30d
+  quantiles: [0.1, 0.5, 0.9]              # for prediction intervals
+
+environment:
+  co2_factor_kg_per_kwh: 0.82             # India grid avg, configurable
+  petrol_l_per_100km: 7.0
+  ev_kwh_per_100km: 15.0
+
+dashboard:
+  theme: "dark"
+  page_title: "EV XAI Planner"
+  default_zone: "Delhi"
+  map_center: [20.5937, 78.9629]
+  map_zoom: 5
+  max_recommendations: 20
+
+extras:
+  lightgbm_enabled: true
+  drift_checks: true
+  pdf_report: true
+  mlflow_enabled: false
+  experiment_log: "outputs/experiment_log.csv"

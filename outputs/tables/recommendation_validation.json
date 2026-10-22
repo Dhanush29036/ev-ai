@@ -1,0 +1,116 @@
+{
+  "sensitivity": {
+    "scenarios": {
+      "demand +20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.33962264150943394,
+          "hotspot": 0.23584905660377356,
+          "supply_gap": 0.18867924528301888,
+          "distance": 0.14150943396226415,
+          "ev_adoption": 0.09433962264150944
+        }
+      },
+      "demand -20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.2553191489361702,
+          "hotspot": 0.26595744680851063,
+          "supply_gap": 0.21276595744680854,
+          "distance": 0.1595744680851064,
+          "ev_adoption": 0.10638297872340427
+        }
+      },
+      "hotspot +20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.2857142857142857,
+          "hotspot": 0.2857142857142857,
+          "supply_gap": 0.19047619047619047,
+          "distance": 0.14285714285714285,
+          "ev_adoption": 0.09523809523809523
+        }
+      },
+      "hotspot -20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.3157894736842105,
+          "hotspot": 0.2105263157894737,
+          "supply_gap": 0.2105263157894737,
+          "distance": 0.15789473684210525,
+          "ev_adoption": 0.10526315789473685
+        }
+      },
+      "supply_gap +20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.28846153846153844,
+          "hotspot": 0.24038461538461536,
+          "supply_gap": 0.23076923076923075,
+          "distance": 0.14423076923076922,
+          "ev_adoption": 0.09615384615384616
+        }
+      },
+      "supply_gap -20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.3125,
+          "hotspot": 0.2604166666666667,
+          "supply_gap": 0.1666666666666667,
+          "distance": 0.15625,
+          "ev_adoption": 0.10416666666666667
+        }
+      },
+      "distance +20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.2912621359223301,
+          "hotspot": 0.24271844660194175,
+          "supply_gap": 0.1941747572815534,
+          "distance": 0.17475728155339804,
+          "ev_adoption": 0.0970873786407767
+        }
+      },
+      "distance -20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.30927835051546393,
+          "hotspot": 0.2577319587628866,
+          "supply_gap": 0.2061855670103093,
+          "distance": 0.12371134020618557,
+          "ev_adoption": 0.10309278350515465
+        }
+      },
+      "ev_adoption +20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.29411764705882354,
+          "hotspot": 0.24509803921568626,
+          "supply_gap": 0.19607843137254902,
+          "distance": 0.14705882352941177,
+          "ev_adoption": 0.11764705882352941
+        }
+      },
+      "ev_adoption -20%": {
+        "kendall_tau": 1.0,
+        "weights": {
+          "demand": 0.30612244897959184,
+          "hotspot": 0.25510204081632654,
+          "supply_gap": 0.20408163265306123,
+          "distance": 0.15306122448979592,
+          "ev_adoption": 0.08163265306122451
+        }
+      }
+    },
+    "mean_kendall_tau": 1.0,
+    "min_kendall_tau": 1.0,
+    "interpretation": "High rank stability (mean tau > 0.8)"
+  },
+  "vs_random_tau": -0.0388,
+  "limitations": [
+    "No ground-truth optimal station locations available for direct validation.",
+    "Backtesting limited by data availability and single time period.",
+    "Spatial weights use KNN (k=5) which may miss long-range interactions.",
+    "Synthetic demand data labeled explicitly where real data unavailable."
+  ]
+}
